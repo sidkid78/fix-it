@@ -254,7 +254,7 @@ export function ListenFixAssistant() {
         setError(null);
 
         try {
-            const response = await fetch('/api/listen-fix', {
+            const response = await fetch('/api/gemini/listen-and-fix', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -301,10 +301,10 @@ export function ListenFixAssistant() {
         <div className="listen-fix-assistant max-w-4xl mx-auto p-4">
             {/* Header */}
             <header className="text-center mb-8">
-                <h1 className="text-3xl font-bold text-gray-900 mb-2">
+                <h1 className="text-3xl font-bold text-foreground mb-2">
                     🔧 Listen & Fix
                 </h1>
-                <p className="text-gray-600">
+                <p className="text-muted-foreground">
                     Record the problem. Get a custom repair guide.
                 </p>
             </header>
@@ -315,13 +315,13 @@ export function ListenFixAssistant() {
                     {['capture', 'details', 'analyzing', 'results'].map((s, i) => (
                         <React.Fragment key={s}>
                             <div className={`flex items-center justify-center w-8 h-8 rounded-full text-sm font-medium
-                ${step === s ? 'bg-blue-600 text-white' :
+                ${step === s ? 'bg-primary text-primary-foreground' :
                                     ['capture', 'details', 'analyzing', 'results'].indexOf(step) > i
-                                        ? 'bg-green-500 text-white'
-                                        : 'bg-gray-200 text-gray-600'}`}>
+                                        ? 'bg-accent text-accent-foreground'
+                                        : 'bg-muted text-muted-foreground'}`}>
                                 {['capture', 'details', 'analyzing', 'results'].indexOf(step) > i ? '✓' : i + 1}
                             </div>
-                            {i < 3 && <div className={`w-12 h-1 ${['capture', 'details', 'analyzing', 'results'].indexOf(step) > i ? 'bg-green-500' : 'bg-gray-200'}`} />}
+                            {i < 3 && <div className={`w-12 h-1 ${['capture', 'details', 'analyzing', 'results'].indexOf(step) > i ? 'bg-accent' : 'bg-muted'}`} />}
                         </React.Fragment>
                     ))}
                 </div>
@@ -329,17 +329,17 @@ export function ListenFixAssistant() {
 
             {/* Error Display */}
             {error && (
-                <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg text-red-700">
+                <div className="mb-6 p-4 bg-destructive/10 border border-destructive/30 rounded-lg text-destructive">
                     {error}
-                    <button onClick={() => setError(null)} className="ml-2 text-red-500 hover:text-red-700">✕</button>
+                    <button onClick={() => setError(null)} className="ml-2 text-destructive hover:text-destructive/80">✕</button>
                 </div>
             )}
 
             {/* Step 1: Capture */}
             {step === 'capture' && (
                 <div className="space-y-6">
-                    <div className="bg-white rounded-xl shadow-lg p-6">
-                        <h2 className="text-xl font-semibold mb-4">Capture the Problem</h2>
+                    <div className="bg-card rounded-xl shadow-lg p-6 border border-border">
+                        <h2 className="text-xl font-semibold text-foreground mb-4">Capture the Problem</h2>
 
                         {/* Recording Controls */}
                         <div className="grid grid-cols-3 gap-4 mb-6">
@@ -347,26 +347,26 @@ export function ListenFixAssistant() {
                                 <>
                                     <button
                                         onClick={startAudioRecording}
-                                        className="flex flex-col items-center p-6 border-2 border-dashed border-gray-300 rounded-xl hover:border-blue-500 hover:bg-blue-50 transition-colors"
+                                        className="flex flex-col items-center p-6 border-2 border-dashed border-border rounded-xl hover:border-primary hover:bg-primary/10 transition-colors"
                                     >
                                         <span className="text-4xl mb-2">🎤</span>
-                                        <span className="font-medium">Record Audio</span>
-                                        <span className="text-sm text-gray-500">Capture sounds</span>
+                                        <span className="font-medium text-foreground">Record Audio</span>
+                                        <span className="text-sm text-muted-foreground">Capture sounds</span>
                                     </button>
 
                                     <button
                                         onClick={startVideoRecording}
-                                        className="flex flex-col items-center p-6 border-2 border-dashed border-gray-300 rounded-xl hover:border-blue-500 hover:bg-blue-50 transition-colors"
+                                        className="flex flex-col items-center p-6 border-2 border-dashed border-border rounded-xl hover:border-primary hover:bg-primary/10 transition-colors"
                                     >
                                         <span className="text-4xl mb-2">🎥</span>
-                                        <span className="font-medium">Record Video</span>
-                                        <span className="text-sm text-gray-500">Show the issue</span>
+                                        <span className="font-medium text-foreground">Record Video</span>
+                                        <span className="text-sm text-muted-foreground">Show the issue</span>
                                     </button>
 
-                                    <label className="flex flex-col items-center p-6 border-2 border-dashed border-gray-300 rounded-xl hover:border-blue-500 hover:bg-blue-50 transition-colors cursor-pointer">
+                                    <label className="flex flex-col items-center p-6 border-2 border-dashed border-border rounded-xl hover:border-primary hover:bg-primary/10 transition-colors cursor-pointer">
                                         <span className="text-4xl mb-2">📷</span>
-                                        <span className="font-medium">Upload Photos</span>
-                                        <span className="text-sm text-gray-500">Add images</span>
+                                        <span className="font-medium text-foreground">Upload Photos</span>
+                                        <span className="text-sm text-muted-foreground">Add images</span>
                                         <input
                                             ref={fileInputRef}
                                             type="file"
@@ -379,23 +379,23 @@ export function ListenFixAssistant() {
                                 </>
                             ) : (
                                 <div className="col-span-3">
-                                    <div className="flex flex-col items-center p-6 bg-red-50 rounded-xl">
+                                    <div className="flex flex-col items-center p-6 bg-destructive/10 rounded-xl">
                                         {recordingType === 'video' && (
                                             <video
                                                 ref={videoPreviewRef}
                                                 muted
-                                                className="w-full max-w-md rounded-lg mb-4 bg-black"
+                                                className="w-full max-w-md rounded-lg mb-4 bg-background"
                                             />
                                         )}
                                         <div className="flex items-center gap-3 mb-4">
-                                            <div className="w-4 h-4 bg-red-500 rounded-full animate-pulse" />
-                                            <span className="text-lg font-medium">
+                                            <div className="w-4 h-4 bg-destructive rounded-full animate-pulse" />
+                                            <span className="text-lg font-medium text-foreground">
                                                 Recording {recordingType}...
                                             </span>
                                         </div>
                                         <button
                                             onClick={stopRecording}
-                                            className="px-6 py-3 bg-red-600 text-white rounded-lg hover:bg-red-700 font-medium"
+                                            className="px-6 py-3 bg-destructive text-destructive-foreground rounded-lg hover:bg-destructive/90 font-medium"
                                         >
                                             ⏹ Stop Recording
                                         </button>
@@ -407,11 +407,11 @@ export function ListenFixAssistant() {
                         {/* Captured Media */}
                         {mediaCaptures.length > 0 && (
                             <div className="mb-6">
-                                <h3 className="font-medium mb-3">Captured Media ({mediaCaptures.length})</h3>
+                                <h3 className="font-medium text-foreground mb-3">Captured Media ({mediaCaptures.length})</h3>
                                 <div className="flex flex-wrap gap-3">
                                     {mediaCaptures.map((capture, index) => (
                                         <div key={index} className="relative group">
-                                            <div className="w-24 h-24 bg-gray-100 rounded-lg flex items-center justify-center overflow-hidden">
+                                            <div className="w-24 h-24 bg-muted rounded-lg flex items-center justify-center overflow-hidden">
                                                 {capture.thumbnail ? (
                                                     <img src={capture.thumbnail} alt="" className="w-full h-full object-cover" />
                                                 ) : (
@@ -422,11 +422,11 @@ export function ListenFixAssistant() {
                                             </div>
                                             <button
                                                 onClick={() => removeCapture(index)}
-                                                className="absolute -top-2 -right-2 w-6 h-6 bg-red-500 text-white rounded-full text-sm opacity-0 group-hover:opacity-100 transition-opacity"
+                                                className="absolute -top-2 -right-2 w-6 h-6 bg-destructive text-destructive-foreground rounded-full text-sm opacity-0 group-hover:opacity-100 transition-opacity"
                                             >
                                                 ✕
                                             </button>
-                                            <span className="text-xs text-gray-500 block text-center mt-1 capitalize">
+                                            <span className="text-xs text-muted-foreground block text-center mt-1 capitalize">
                                                 {capture.type}
                                             </span>
                                         </div>
@@ -437,14 +437,14 @@ export function ListenFixAssistant() {
 
                         {/* Description */}
                         <div>
-                            <label className="block font-medium mb-2">
+                            <label className="block font-medium text-foreground mb-2">
                                 Describe the Problem (optional but helpful)
                             </label>
                             <textarea
                                 value={description}
                                 onChange={(e) => setDescription(e.target.value)}
                                 placeholder="E.g., 'My car makes a clicking noise when I turn right, especially at low speeds...'"
-                                className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                className="w-full p-3 bg-input border border-border rounded-lg focus:ring-2 focus:ring-ring focus:border-transparent text-foreground placeholder:text-muted-foreground"
                                 rows={3}
                             />
                         </div>
@@ -454,7 +454,7 @@ export function ListenFixAssistant() {
                         <button
                             onClick={() => setStep('details')}
                             disabled={mediaCaptures.length === 0 && !description}
-                            className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed font-medium"
+                            className="px-6 py-3 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed font-medium"
                         >
                             Next: Equipment Details →
                         </button>
@@ -465,13 +465,13 @@ export function ListenFixAssistant() {
             {/* Step 2: Equipment Details */}
             {step === 'details' && (
                 <div className="space-y-6">
-                    <div className="bg-white rounded-xl shadow-lg p-6">
-                        <h2 className="text-xl font-semibold mb-4">Equipment Details</h2>
+                    <div className="bg-card rounded-xl shadow-lg p-6 border border-border">
+                        <h2 className="text-xl font-semibold text-foreground mb-4">Equipment Details</h2>
 
                         <div className="grid md:grid-cols-2 gap-6">
                             {/* Equipment Type */}
                             <div>
-                                <label className="block font-medium mb-2">Equipment Type *</label>
+                                <label className="block font-medium text-foreground mb-2">Equipment Type *</label>
                                 <select
                                     value={equipment.type}
                                     onChange={(e) => setEquipment(prev => ({
@@ -479,7 +479,7 @@ export function ListenFixAssistant() {
                                         type: e.target.value as EquipmentInfo['type'],
                                         category: ''
                                     }))}
-                                    className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                                    className="w-full p-3 bg-input border border-border rounded-lg focus:ring-2 focus:ring-ring text-foreground"
                                 >
                                     <option value="vehicle">🚗 Vehicle</option>
                                     <option value="appliance">🏠 Appliance</option>
@@ -492,11 +492,11 @@ export function ListenFixAssistant() {
 
                             {/* Category */}
                             <div>
-                                <label className="block font-medium mb-2">Category</label>
+                                <label className="block font-medium text-foreground mb-2">Category</label>
                                 <select
                                     value={equipment.category}
                                     onChange={(e) => setEquipment(prev => ({ ...prev, category: e.target.value }))}
-                                    className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                                    className="w-full p-3 bg-input border border-border rounded-lg focus:ring-2 focus:ring-ring text-foreground"
                                 >
                                     <option value="">Select...</option>
                                     {EQUIPMENT_CATEGORIES[equipment.type]?.map(cat => (
@@ -507,66 +507,66 @@ export function ListenFixAssistant() {
 
                             {/* Make */}
                             <div>
-                                <label className="block font-medium mb-2">Make/Brand</label>
+                                <label className="block font-medium text-foreground mb-2">Make/Brand</label>
                                 <input
                                     type="text"
                                     value={equipment.make}
                                     onChange={(e) => setEquipment(prev => ({ ...prev, make: e.target.value }))}
                                     placeholder="e.g., Honda, Samsung, Carrier"
-                                    className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                                    className="w-full p-3 bg-input border border-border rounded-lg focus:ring-2 focus:ring-ring text-foreground placeholder:text-muted-foreground"
                                 />
                             </div>
 
                             {/* Model */}
                             <div>
-                                <label className="block font-medium mb-2">Model</label>
+                                <label className="block font-medium text-foreground mb-2">Model</label>
                                 <input
                                     type="text"
                                     value={equipment.model}
                                     onChange={(e) => setEquipment(prev => ({ ...prev, model: e.target.value }))}
                                     placeholder="e.g., Accord, RF28R7551SR"
-                                    className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                                    className="w-full p-3 bg-input border border-border rounded-lg focus:ring-2 focus:ring-ring text-foreground placeholder:text-muted-foreground"
                                 />
                             </div>
 
                             {/* Year */}
                             <div>
-                                <label className="block font-medium mb-2">Year</label>
+                                <label className="block font-medium text-foreground mb-2">Year</label>
                                 <input
                                     type="text"
                                     value={equipment.year}
                                     onChange={(e) => setEquipment(prev => ({ ...prev, year: e.target.value }))}
                                     placeholder="e.g., 2019"
-                                    className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                                    className="w-full p-3 bg-input border border-border rounded-lg focus:ring-2 focus:ring-ring text-foreground placeholder:text-muted-foreground"
                                 />
                             </div>
 
                             {/* ZIP Code */}
                             <div>
-                                <label className="block font-medium mb-2">ZIP Code (for parts)</label>
+                                <label className="block font-medium text-foreground mb-2">ZIP Code (for parts)</label>
                                 <input
                                     type="text"
                                     value={location.zipCode}
                                     onChange={(e) => setLocation(prev => ({ ...prev, zipCode: e.target.value }))}
                                     placeholder="e.g., 78701"
-                                    className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                                    className="w-full p-3 bg-input border border-border rounded-lg focus:ring-2 focus:ring-ring text-foreground placeholder:text-muted-foreground"
                                 />
                             </div>
                         </div>
 
                         {/* User Preferences */}
-                        <div className="mt-6 pt-6 border-t">
-                            <h3 className="font-medium mb-4">Your Skill Level & Preferences</h3>
+                        <div className="mt-6 pt-6 border-t border-border">
+                            <h3 className="font-medium text-foreground mb-4">Your Skill Level & Preferences</h3>
                             <div className="grid md:grid-cols-2 gap-4">
                                 <div>
-                                    <label className="block text-sm font-medium mb-2">Skill Level</label>
+                                    <label className="block text-sm font-medium text-foreground mb-2">Skill Level</label>
                                     <select
                                         value={preferences.skillLevel}
                                         onChange={(e) => setPreferences(prev => ({
                                             ...prev,
                                             skillLevel: e.target.value as UserPreferences['skillLevel']
                                         }))}
-                                        className="w-full p-3 border border-gray-300 rounded-lg"
+                                        className="w-full p-3 bg-input border border-border rounded-lg text-foreground"
                                     >
                                         <option value="beginner">🌱 Beginner - First time DIY</option>
                                         <option value="intermediate">🔧 Intermediate - Some experience</option>
@@ -576,22 +576,22 @@ export function ListenFixAssistant() {
                                 </div>
 
                                 <div className="space-y-3">
-                                    <label className="flex items-center gap-3 cursor-pointer">
+                                    <label className="flex items-center gap-3 cursor-pointer text-foreground">
                                         <input
                                             type="checkbox"
                                             checked={preferences.hasBasicTools}
                                             onChange={(e) => setPreferences(prev => ({ ...prev, hasBasicTools: e.target.checked }))}
-                                            className="w-5 h-5 rounded"
+                                            className="w-5 h-5 rounded accent-primary"
                                         />
                                         <span>I have basic tools (wrenches, screwdrivers, etc.)</span>
                                     </label>
 
-                                    <label className="flex items-center gap-3 cursor-pointer">
+                                    <label className="flex items-center gap-3 cursor-pointer text-foreground">
                                         <input
                                             type="checkbox"
                                             checked={preferences.preferOEM}
                                             onChange={(e) => setPreferences(prev => ({ ...prev, preferOEM: e.target.checked }))}
-                                            className="w-5 h-5 rounded"
+                                            className="w-5 h-5 rounded accent-primary"
                                         />
                                         <span>Prefer OEM (original) parts</span>
                                     </label>
@@ -603,13 +603,13 @@ export function ListenFixAssistant() {
                     <div className="flex justify-between">
                         <button
                             onClick={() => setStep('capture')}
-                            className="px-6 py-3 border border-gray-300 rounded-lg hover:bg-gray-50 font-medium"
+                            className="px-6 py-3 border border-border bg-card text-foreground rounded-lg hover:bg-muted font-medium"
                         >
                             ← Back
                         </button>
                         <button
                             onClick={analyzeIssue}
-                            className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium"
+                            className="px-6 py-3 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 font-medium"
                         >
                             🔍 Analyze & Generate Guide
                         </button>
@@ -619,25 +619,25 @@ export function ListenFixAssistant() {
 
             {/* Step 3: Analyzing */}
             {step === 'analyzing' && (
-                <div className="bg-white rounded-xl shadow-lg p-12 text-center">
-                    <div className="inline-flex items-center justify-center w-20 h-20 bg-blue-100 rounded-full mb-6">
-                        <div className="w-12 h-12 border-4 border-blue-600 border-t-transparent rounded-full animate-spin" />
+                <div className="bg-card rounded-xl shadow-lg p-12 text-center border border-border">
+                    <div className="inline-flex items-center justify-center w-20 h-20 bg-primary/20 rounded-full mb-6">
+                        <div className="w-12 h-12 border-4 border-primary border-t-transparent rounded-full animate-spin" />
                     </div>
-                    <h2 className="text-2xl font-semibold mb-2">Analyzing Your Issue</h2>
-                    <p className="text-gray-600 mb-6">
+                    <h2 className="text-2xl font-semibold text-foreground mb-2">Analyzing Your Issue</h2>
+                    <p className="text-muted-foreground mb-6">
                         Our AI is examining your recordings and generating a custom repair guide...
                     </p>
-                    <div className="max-w-md mx-auto space-y-2 text-sm text-gray-500">
+                    <div className="max-w-md mx-auto space-y-2 text-sm text-muted-foreground">
                         <div className="flex items-center gap-2">
-                            <span className="text-green-500">✓</span> Processing media inputs
+                            <span className="text-accent">✓</span> Processing media inputs
                         </div>
                         <div className="flex items-center gap-2">
-                            <span className="text-blue-500 animate-pulse">●</span> Diagnosing issue
+                            <span className="text-primary animate-pulse">●</span> Diagnosing issue
                         </div>
-                        <div className="flex items-center gap-2 text-gray-400">
+                        <div className="flex items-center gap-2 opacity-50">
                             <span>○</span> Retrieving technical documentation
                         </div>
-                        <div className="flex items-center gap-2 text-gray-400">
+                        <div className="flex items-center gap-2 opacity-50">
                             <span>○</span> Finding parts availability
                         </div>
                     </div>
@@ -661,82 +661,82 @@ function RepairGuideDisplay({ guide, onStartOver }: { guide: RepairGuide; onStar
     const [expandedStep, setExpandedStep] = useState<number | null>(0);
 
     const severityColors: Record<string, string> = {
-        low: 'bg-green-100 text-green-800',
-        medium: 'bg-yellow-100 text-yellow-800',
-        high: 'bg-orange-100 text-orange-800',
-        critical: 'bg-red-100 text-red-800'
+        low: 'bg-accent/20 text-accent',
+        medium: 'bg-secondary/20 text-secondary',
+        high: 'bg-neon-orange/20 text-neon-orange',
+        critical: 'bg-destructive/20 text-destructive'
     };
 
     const difficultyColors: Record<string, string> = {
-        easy: 'bg-green-100 text-green-800',
-        moderate: 'bg-yellow-100 text-yellow-800',
-        difficult: 'bg-orange-100 text-orange-800',
-        expert: 'bg-red-100 text-red-800'
+        easy: 'bg-accent/20 text-accent',
+        moderate: 'bg-secondary/20 text-secondary',
+        difficult: 'bg-neon-orange/20 text-neon-orange',
+        expert: 'bg-destructive/20 text-destructive'
     };
 
     return (
         <div className="space-y-6">
             {/* Header */}
-            <div className="bg-white rounded-xl shadow-lg p-6">
+            <div className="bg-card rounded-xl shadow-lg p-6 border border-border">
                 <div className="flex justify-between items-start mb-4">
                     <div>
-                        <h2 className="text-2xl font-bold">{guide.title}</h2>
-                        <p className="text-gray-600 mt-1">{guide.summary}</p>
+                        <h2 className="text-2xl font-bold text-foreground">{guide.title}</h2>
+                        <p className="text-muted-foreground mt-1">{guide.summary}</p>
                     </div>
                     <button
                         onClick={onStartOver}
-                        className="px-4 py-2 text-gray-600 hover:text-gray-800 hover:bg-gray-100 rounded-lg"
+                        className="px-4 py-2 text-muted-foreground hover:text-foreground hover:bg-muted rounded-lg"
                     >
                         Start Over
                     </button>
                 </div>
 
                 {/* Diagnosis Summary */}
-                <div className="bg-gray-50 rounded-lg p-4 mb-4">
+                <div className="bg-muted rounded-lg p-4 mb-4">
                     <div className="flex items-center gap-4 mb-2">
-                        <span className={`px-3 py-1 rounded-full text-sm font-medium ${severityColors[guide.diagnosis.severity] || 'bg-gray-100'}`}>
+                        <span className={`px-3 py-1 rounded-full text-sm font-medium ${severityColors[guide.diagnosis.severity] || 'bg-muted'}`}>
                             {guide.diagnosis.severity.toUpperCase()} SEVERITY
                         </span>
-                        <span className={`px-3 py-1 rounded-full text-sm font-medium ${difficultyColors[guide.overallDifficulty] || 'bg-gray-100'}`}>
+                        <span className={`px-3 py-1 rounded-full text-sm font-medium ${difficultyColors[guide.overallDifficulty] || 'bg-muted'}`}>
                             {guide.overallDifficulty.toUpperCase()} DIFFICULTY
                         </span>
-                        <span className="text-gray-500 text-sm">
+                        <span className="text-muted-foreground text-sm">
                             Confidence: {Math.round(guide.confidenceScore * 100)}%
                         </span>
                     </div>
-                    <p className="font-medium">{guide.diagnosis.primaryDiagnosis}</p>
-                    <p className="text-sm text-gray-600 mt-1">
+                    <p className="font-medium text-foreground">{guide.diagnosis.primaryDiagnosis}</p>
+                    <p className="text-sm text-muted-foreground mt-1">
                         Symptoms: {guide.diagnosis.symptoms.join(', ')}
                     </p>
                 </div>
 
                 {/* Quick Stats */}
                 <div className="grid grid-cols-3 gap-4 text-center">
-                    <div className="bg-blue-50 rounded-lg p-3">
-                        <div className="text-2xl font-bold text-blue-600">{guide.totalTime}</div>
-                        <div className="text-sm text-gray-600">Estimated Time</div>
+                    <div className="bg-primary/10 rounded-lg p-3">
+                        <div className="text-2xl font-bold text-primary">{guide.totalTime}</div>
+                        <div className="text-sm text-muted-foreground">Estimated Time</div>
                     </div>
-                    <div className="bg-green-50 rounded-lg p-3">
-                        <div className="text-2xl font-bold text-green-600">{guide.steps.length}</div>
-                        <div className="text-sm text-gray-600">Steps</div>
+                    <div className="bg-accent/10 rounded-lg p-3">
+                        <div className="text-2xl font-bold text-accent">{guide.steps.length}</div>
+                        <div className="text-sm text-muted-foreground">Steps</div>
                     </div>
-                    <div className="bg-purple-50 rounded-lg p-3">
-                        <div className="text-2xl font-bold text-purple-600">{guide.requiredParts.length}</div>
-                        <div className="text-sm text-gray-600">Parts Needed</div>
+                    <div className="bg-secondary/10 rounded-lg p-3">
+                        <div className="text-2xl font-bold text-secondary">{guide.requiredParts.length}</div>
+                        <div className="text-sm text-muted-foreground">Parts Needed</div>
                     </div>
                 </div>
             </div>
 
             {/* Safety Warnings */}
             {guide.safetyWarnings.length > 0 && (
-                <div className="bg-red-50 border border-red-200 rounded-xl p-6">
-                    <h3 className="font-semibold text-red-800 flex items-center gap-2 mb-3">
+                <div className="bg-destructive/10 border border-destructive/30 rounded-xl p-6">
+                    <h3 className="font-semibold text-destructive flex items-center gap-2 mb-3">
                         ⚠️ Safety Warnings
                     </h3>
                     <ul className="space-y-2">
                         {guide.safetyWarnings.map((warning, i) => (
-                            <li key={i} className="flex items-start gap-2 text-red-700">
-                                <span className="text-red-500 mt-1">•</span>
+                            <li key={i} className="flex items-start gap-2 text-destructive">
+                                <span className="text-destructive mt-1">•</span>
                                 {warning}
                             </li>
                         ))}
@@ -745,8 +745,8 @@ function RepairGuideDisplay({ guide, onStartOver }: { guide: RepairGuide; onStar
             )}
 
             {/* Tabs */}
-            <div className="bg-white rounded-xl shadow-lg overflow-hidden">
-                <div className="flex border-b">
+            <div className="bg-card rounded-xl shadow-lg overflow-hidden border border-border">
+                <div className="flex border-b border-border">
                     {[
                         { id: 'steps', label: '📋 Steps', count: guide.steps.length },
                         { id: 'parts', label: '🔩 Parts', count: guide.requiredParts.length },
@@ -757,8 +757,8 @@ function RepairGuideDisplay({ guide, onStartOver }: { guide: RepairGuide; onStar
                             onClick={() => setActiveTab(tab.id as typeof activeTab)}
                             className={`flex-1 px-6 py-4 font-medium transition-colors
                 ${activeTab === tab.id
-                                    ? 'bg-blue-50 text-blue-600 border-b-2 border-blue-600'
-                                    : 'text-gray-600 hover:bg-gray-50'}`}
+                                    ? 'bg-primary/10 text-primary border-b-2 border-primary'
+                                    : 'text-muted-foreground hover:bg-muted'}`}
                         >
                             {tab.label} ({tab.count})
                         </button>
@@ -772,50 +772,50 @@ function RepairGuideDisplay({ guide, onStartOver }: { guide: RepairGuide; onStar
                             {guide.steps.map((step, index) => (
                                 <div
                                     key={step.stepNumber}
-                                    className="border rounded-lg overflow-hidden"
+                                    className="border border-border rounded-lg overflow-hidden"
                                 >
                                     <button
                                         onClick={() => setExpandedStep(expandedStep === index ? null : index)}
-                                        className="w-full px-4 py-3 flex items-center gap-4 hover:bg-gray-50 text-left"
+                                        className="w-full px-4 py-3 flex items-center gap-4 hover:bg-muted text-left"
                                     >
-                                        <span className="shrink-0 w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center font-medium">
+                                        <span className="shrink-0 w-8 h-8 bg-primary text-primary-foreground rounded-full flex items-center justify-center font-medium">
                                             {step.stepNumber}
                                         </span>
                                         <div className="flex-1">
-                                            <div className="font-medium">{step.title}</div>
-                                            <div className="text-sm text-gray-500">
+                                            <div className="font-medium text-foreground">{step.title}</div>
+                                            <div className="text-sm text-muted-foreground">
                                                 {step.duration} • {step.difficulty}
                                             </div>
                                         </div>
-                                        <span className={`transform transition-transform ${expandedStep === index ? 'rotate-180' : ''}`}>
+                                        <span className={`transform transition-transform text-muted-foreground ${expandedStep === index ? 'rotate-180' : ''}`}>
                                             ▼
                                         </span>
                                     </button>
 
                                     {expandedStep === index && (
-                                        <div className="px-4 py-4 bg-gray-50 border-t">
-                                            <p className="mb-4">{step.description}</p>
+                                        <div className="px-4 py-4 bg-muted border-t border-border">
+                                            <p className="mb-4 text-foreground">{step.description}</p>
 
                                             {step.warnings.length > 0 && (
-                                                <div className="mb-3 p-3 bg-yellow-50 rounded-lg">
-                                                    <div className="font-medium text-yellow-800 mb-1">⚠️ Warnings</div>
-                                                    <ul className="text-sm text-yellow-700 space-y-1">
+                                                <div className="mb-3 p-3 bg-neon-orange/10 rounded-lg">
+                                                    <div className="font-medium text-neon-orange mb-1">⚠️ Warnings</div>
+                                                    <ul className="text-sm text-neon-orange space-y-1">
                                                         {step.warnings.map((w, i) => <li key={i}>• {w}</li>)}
                                                     </ul>
                                                 </div>
                                             )}
 
                                             {step.tips.length > 0 && (
-                                                <div className="mb-3 p-3 bg-blue-50 rounded-lg">
-                                                    <div className="font-medium text-blue-800 mb-1">💡 Tips</div>
-                                                    <ul className="text-sm text-blue-700 space-y-1">
+                                                <div className="mb-3 p-3 bg-primary/10 rounded-lg">
+                                                    <div className="font-medium text-primary mb-1">💡 Tips</div>
+                                                    <ul className="text-sm text-primary space-y-1">
                                                         {step.tips.map((t, i) => <li key={i}>• {t}</li>)}
                                                     </ul>
                                                 </div>
                                             )}
 
                                             {step.tools.length > 0 && (
-                                                <div className="text-sm text-gray-600">
+                                                <div className="text-sm text-muted-foreground">
                                                     <strong>Tools needed:</strong> {step.tools.join(', ')}
                                                 </div>
                                             )}
@@ -830,33 +830,33 @@ function RepairGuideDisplay({ guide, onStartOver }: { guide: RepairGuide; onStar
                     {activeTab === 'parts' && (
                         <div className="space-y-4">
                             {guide.requiredParts.map((part, index) => (
-                                <div key={index} className="border rounded-lg p-4">
+                                <div key={index} className="border border-border rounded-lg p-4">
                                     <div className="flex justify-between items-start mb-2">
                                         <div>
-                                            <h4 className="font-medium">{part.name}</h4>
+                                            <h4 className="font-medium text-foreground">{part.name}</h4>
                                             {part.partNumber && (
-                                                <p className="text-sm text-gray-500">Part #: {part.partNumber}</p>
+                                                <p className="text-sm text-muted-foreground">Part #: {part.partNumber}</p>
                                             )}
                                         </div>
                                         <span className={`px-2 py-1 rounded text-xs font-medium
-                      ${part.priority === 'required' ? 'bg-red-100 text-red-700' :
-                                                part.priority === 'recommended' ? 'bg-yellow-100 text-yellow-700' :
-                                                    'bg-gray-100 text-gray-700'}`}>
+                      ${part.priority === 'required' ? 'bg-destructive/20 text-destructive' :
+                                                part.priority === 'recommended' ? 'bg-secondary/20 text-secondary' :
+                                                    'bg-muted text-muted-foreground'}`}>
                                             {part.priority}
                                         </span>
                                     </div>
 
-                                    <p className="text-sm text-gray-600 mb-3">{part.description}</p>
+                                    <p className="text-sm text-muted-foreground mb-3">{part.description}</p>
 
                                     <div className="flex items-center gap-4 mb-3">
-                                        <span className="text-lg font-semibold text-green-600">
+                                        <span className="text-lg font-semibold text-accent">
                                             ${part.estimatedPrice.low} - ${part.estimatedPrice.high}
                                         </span>
                                     </div>
 
                                     {part.whereToFind.length > 0 && (
                                         <div>
-                                            <div className="text-sm font-medium mb-2">Where to buy:</div>
+                                            <div className="text-sm font-medium text-foreground mb-2">Where to buy:</div>
                                             <div className="flex flex-wrap gap-2">
                                                 {part.whereToFind.map((source, i) => (
                                                     <a
@@ -864,11 +864,11 @@ function RepairGuideDisplay({ guide, onStartOver }: { guide: RepairGuide; onStar
                                                         href={source.website}
                                                         target="_blank"
                                                         rel="noopener noreferrer"
-                                                        className="px-3 py-1 bg-gray-100 hover:bg-gray-200 rounded-full text-sm inline-flex items-center gap-1"
+                                                        className="px-3 py-1 bg-muted hover:bg-muted/80 rounded-full text-sm inline-flex items-center gap-1 text-foreground"
                                                     >
                                                         {source.storeName}
-                                                        {source.price && <span className="text-green-600">${source.price}</span>}
-                                                        <span className="text-gray-400">↗</span>
+                                                        {source.price && <span className="text-accent">${source.price}</span>}
+                                                        <span className="text-muted-foreground">↗</span>
                                                     </a>
                                                 ))}
                                             </div>
@@ -882,10 +882,10 @@ function RepairGuideDisplay({ guide, onStartOver }: { guide: RepairGuide; onStar
                     {/* Tools Tab */}
                     {activeTab === 'tools' && (
                         <div>
-                            <h4 className="font-medium mb-3">Required Tools</h4>
+                            <h4 className="font-medium text-foreground mb-3">Required Tools</h4>
                             <div className="grid grid-cols-2 md:grid-cols-3 gap-2 mb-6">
                                 {guide.requiredTools.map((tool, i) => (
-                                    <div key={i} className="px-3 py-2 bg-gray-100 rounded-lg text-sm">
+                                    <div key={i} className="px-3 py-2 bg-muted rounded-lg text-sm text-foreground">
                                         🔧 {tool}
                                     </div>
                                 ))}
@@ -897,13 +897,13 @@ function RepairGuideDisplay({ guide, onStartOver }: { guide: RepairGuide; onStar
 
             {/* Troubleshooting */}
             {guide.troubleshooting.length > 0 && (
-                <div className="bg-white rounded-xl shadow-lg p-6">
-                    <h3 className="font-semibold mb-4">🔍 Troubleshooting</h3>
+                <div className="bg-card rounded-xl shadow-lg p-6 border border-border">
+                    <h3 className="font-semibold text-foreground mb-4">🔍 Troubleshooting</h3>
                     <div className="space-y-3">
                         {guide.troubleshooting.map((item, i) => (
-                            <div key={i} className="border-l-4 border-blue-500 pl-4">
-                                <div className="font-medium">Problem: {item.problem}</div>
-                                <div className="text-gray-600">Solution: {item.solution}</div>
+                            <div key={i} className="border-l-4 border-primary pl-4">
+                                <div className="font-medium text-foreground">Problem: {item.problem}</div>
+                                <div className="text-muted-foreground">Solution: {item.solution}</div>
                             </div>
                         ))}
                     </div>
@@ -911,8 +911,8 @@ function RepairGuideDisplay({ guide, onStartOver }: { guide: RepairGuide; onStar
             )}
 
             {/* Disclaimers */}
-            <div className="bg-gray-50 rounded-xl p-6 text-sm text-gray-600">
-                <h4 className="font-medium text-gray-700 mb-2">Disclaimers</h4>
+            <div className="bg-muted rounded-xl p-6 text-sm text-muted-foreground">
+                <h4 className="font-medium text-foreground mb-2">Disclaimers</h4>
                 <ul className="space-y-1">
                     {guide.disclaimers.map((d, i) => (
                         <li key={i}>• {d}</li>
