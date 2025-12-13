@@ -189,25 +189,37 @@ export class RAGService {
     async generateEmbeddings(texts: string | string[]): Promise<number[][]> {
         const textArray = Array.isArray(texts) ? texts : [texts];
 
+        // Use batchEmbedContents for multiple texts
         const response = await fetch(
-            `${this.baseUrl}/v1beta/models/${this.config.embeddingModel}:embedContent?key=${this.apiKey}`,
+            `${this.baseUrl}/v1beta/models/${this.config.embeddingModel}:batchEmbedContents?key=${this.apiKey}`,
             {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    model: `models/${this.config.embeddingModel}`,
-                    content: { parts: textArray.map(text => ({ text })) },
-                    taskType: 'RETRIEVAL_DOCUMENT',
-                    outputDimensionality: this.config.embeddingDimensions
+                    requests: textArray.map(text => ({
+                        model: `models/${this.config.embeddingModel}`,
+                        content: { parts: [{ text }] },
+                        taskType: 'RETRIEVAL_DOCUMENT',
+                        outputDimensionality: this.config.embeddingDimensions
+                    }))
                 })
             }
         );
 
         if (!response.ok) {
-            throw new Error('Failed to generate embeddings');
+            const errorText = await response.text();
+            console.error('[RAG] Embedding error:', errorText);
+            throw new Error(`Failed to generate embeddings: ${response.status}`);
         }
 
         const data = await response.json();
+
+        // batchEmbedContents returns { embeddings: [{ values: [...] }, ...] }
+        if (!data.embeddings || !Array.isArray(data.embeddings)) {
+            console.error('[RAG] Unexpected embedding response:', JSON.stringify(data).slice(0, 500));
+            throw new Error('Unexpected embedding response format');
+        }
+
         return data.embeddings.map((e: { values: number[] }) => e.values);
     }
 
