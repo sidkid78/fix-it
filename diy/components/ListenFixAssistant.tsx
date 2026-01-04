@@ -473,6 +473,7 @@ export function ListenFixAssistant() {
                             <div>
                                 <label className="block font-medium text-foreground mb-2">Equipment Type *</label>
                                 <select
+                                    title="Equipment Type"
                                     value={equipment.type}
                                     onChange={(e) => setEquipment(prev => ({
                                         ...prev,
@@ -494,6 +495,7 @@ export function ListenFixAssistant() {
                             <div>
                                 <label className="block font-medium text-foreground mb-2">Category</label>
                                 <select
+                                    title="Category"
                                     value={equipment.category}
                                     onChange={(e) => setEquipment(prev => ({ ...prev, category: e.target.value }))}
                                     className="w-full p-3 bg-input border border-border rounded-lg focus:ring-2 focus:ring-ring text-foreground"
@@ -561,6 +563,7 @@ export function ListenFixAssistant() {
                                 <div>
                                     <label className="block text-sm font-medium text-foreground mb-2">Skill Level</label>
                                     <select
+                                        title="Skill Level"
                                         value={preferences.skillLevel}
                                         onChange={(e) => setPreferences(prev => ({
                                             ...prev,
