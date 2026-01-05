@@ -99,7 +99,7 @@ export async function POST(request: NextRequest) {
         }
 
         const response = await genai.models.generateContent({
-            model: 'gemiini-2.5-flash',
+            model: 'gemini-3-flash-preview',
             contents: [{ role: 'user', parts }],
             config: Object.keys(config).length > 0 ? config : undefined
         });
